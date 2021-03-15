@@ -1,11 +1,18 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';
+import 'package:session/common/bloc/login_bloc.dart';
 import 'package:session/ui/app.dart';
 
-void main() {
+void main() async {
   final injector = Injector.appInstance;
-
-  runApp(App());
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  injector.registerDependency<FirebaseAuth>(() => firebaseAuth);
+  injector.registerDependency<LoginBloc>(() => LoginBloc(firebaseAuth));
+  runApp(App(injector));
 }
 //
 //class MyApp extends StatelessWidget {

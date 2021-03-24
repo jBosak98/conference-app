@@ -18,6 +18,16 @@ class _RoomPageState extends State<RoomPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+          actions: <Widget>[
+            IconButton(
+                icon: Icon(Icons.message),
+                onPressed: () => Navigator.pushNamed(context, '/chat')
+            ),
+            IconButton(
+              icon: Icon(Icons.account_circle),
+              onPressed: () => Navigator.pushNamed(context, '/login')
+            ),
+          ],
       ),
     );
   }

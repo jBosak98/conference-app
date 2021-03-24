@@ -20,11 +20,11 @@ class App extends StatelessWidget {
         primarySwatch: Colors.blue,
         accentColor: Colors.amberAccent,
       ),
-      home: LoginPage(_injector.get<LoginBloc>(), title: 'My room'),
-//      routes: <String, WidgetBuilder> {
-//        '/login': (BuildContext context) =>
-//            LoginPage(title: 'Login/Register'),
-//      },
+      home: RoomPage( title: 'My room'),
+      routes: <String, WidgetBuilder> {
+        '/login': (BuildContext context) =>
+            LoginPage(_injector.get<LoginBloc>(), title: 'Login/Register'),
+      },
     );
   }
 }

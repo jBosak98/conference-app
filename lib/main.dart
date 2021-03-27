@@ -1,17 +1,24 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';
+import 'package:session/common/bloc/chat_bloc.dart';
 import 'package:session/common/bloc/login_bloc.dart';
+import 'package:session/common/repository/continuous_messages_repository.dart';
 import 'package:session/ui/app.dart';
 
 void main() async {
   final injector = Injector.appInstance;
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  FirebaseFirestore _firestore = FirebaseFirestore.instance;
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   injector.registerDependency<FirebaseAuth>(() => firebaseAuth);
   injector.registerDependency<LoginBloc>(() => LoginBloc(firebaseAuth));
+  injector.registerDependency(() => ContinuousMessagesRepository(_firestore, firebaseAuth));
+  injector.registerDependency<ChatBloc>(() => ChatBloc(injector.get<ContinuousMessagesRepository>()));
+
   runApp(App(injector));
 }
 //

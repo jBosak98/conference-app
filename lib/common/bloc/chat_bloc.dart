@@ -8,11 +8,10 @@ import 'base_bloc.dart';
 class ChatBloc extends BaseBloc {
   ContinuousMessagesRepository _continuousMessagesRepository;
 
-  String _roomId;
   ChatBloc(this._continuousMessagesRepository);
 
-  Stream<QuerySnapshot> continuousMessagesStream() =>
-      _continuousMessagesRepository.chatStream(_roomId);
+  Stream<QuerySnapshot> continuousMessagesStream(roomId) =>
+      _continuousMessagesRepository.chatStream(roomId);
 
   void sendMessage(roomId, content) =>
       _continuousMessagesRepository.sendMessage(roomId, content);

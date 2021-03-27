@@ -21,7 +21,7 @@ class _RoomPageState extends State<RoomPage> {
           actions: <Widget>[
             IconButton(
                 icon: Icon(Icons.message),
-                onPressed: () => Navigator.pushNamed(context, '/chat')
+                onPressed: () => Navigator.pushNamed(context, '/chatLobby')
             ),
             IconButton(
               icon: Icon(Icons.account_circle),

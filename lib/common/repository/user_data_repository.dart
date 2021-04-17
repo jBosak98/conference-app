@@ -20,7 +20,8 @@ class UserDataRepository {
         .set({
           'name': user.displayName,
           'pushToken': token,
-          'userImg': user.photoURL
+          'userImg': user.photoURL,
+          'uid':user.uid
         });
   }
 

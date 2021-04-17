@@ -21,13 +21,14 @@ void main() async {
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   final _firebaseMessaging = FirebaseMessaging.instance;
   final userDataRepository = UserDataRepository(_firestore, _firebaseMessaging);
-  final continuousUsersRepository = ContinuousUsersRepository(_firestore, firebaseAuth);
+  final continuousUsersRepository = ContinuousUsersRepository(_firestore);
+  final chatLobbyBloc = ChatLobbyBloc(continuousUsersRepository,firebaseAuth, _firestore);
 
   injector.registerDependency<FirebaseAuth>(() => firebaseAuth);
   injector.registerDependency<LoginBloc>(() => LoginBloc(firebaseAuth, userDataRepository));
   injector.registerDependency(() => ContinuousMessagesRepository(_firestore, firebaseAuth));
   injector.registerDependency<ChatBloc>(() => ChatBloc(injector.get<ContinuousMessagesRepository>()));
-  injector.registerDependency<ChatLobbyBloc>(() => ChatLobbyBloc(continuousUsersRepository));
+  injector.registerDependency<ChatLobbyBloc>(() => chatLobbyBloc);
   runApp(App(injector));
 }
 //

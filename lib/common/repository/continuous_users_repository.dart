@@ -2,15 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ContinuousUsersRepository {
-  FirebaseAuth _firebaseAuth;
   FirebaseFirestore _firestore;
-  User _user;
 
-  ContinuousUsersRepository(this._firestore, this._firebaseAuth);
+  ContinuousUsersRepository(this._firestore);
 
-  void loadUser(){
-    _user = _firebaseAuth.currentUser;
-  }
 
   Stream<QuerySnapshot> users() =>
      _firestore

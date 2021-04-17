@@ -15,12 +15,12 @@ class ChatPage extends StatefulWidget {
 }
 class ChatArguments {
   final String roomId;
-
   ChatArguments(this.roomId);
 }
 class _ChatPageState extends State<ChatPage> {
   final TextEditingController textEditingController =
     new TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {

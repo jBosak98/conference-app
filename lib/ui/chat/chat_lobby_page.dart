@@ -24,7 +24,7 @@ class _ChatLobbyState extends State<ChatLobbyPage> {
   );
   @override
   Widget build(BuildContext context) {
-    final globalChat = _chatCell('global', 'Global chat', Icon(Icons.group));
+    final globalChat = _chatCell(()async=>'global', 'Global chat', Icon(Icons.group));
 
     return Scaffold(
         appBar: AppBar(
@@ -40,16 +40,18 @@ class _ChatLobbyState extends State<ChatLobbyPage> {
     );
   }
 
-  Widget _chatCell(String roomId, String text, icon){
+  Widget _chatCell(Function getRoomId, String text, icon){
     return Container(
       color: Colors.white,
       child: TextButton(
-          onPressed: () =>
-              Navigator.pushNamed(
-                  context,
-                  '/chat',
-                  arguments: ChatArguments(roomId)
-              ),
+          onPressed: () async {
+            final roomId = await getRoomId();
+            Navigator.pushNamed(
+                context,
+                '/chat',
+                arguments: ChatArguments(roomId)
+            );
+            },
           child: Padding(
               padding: EdgeInsets.all(20),
               child: Row(
@@ -104,10 +106,16 @@ class _ChatLobbyState extends State<ChatLobbyPage> {
   Widget _userChatCell(QueryDocumentSnapshot user){
     String name = user.data()['name'];
     String avatarUrl = user.data()['userImg'];
+
+    String userUid = user.data()['uid'];
+    final getRoomId = ()async {
+      return widget.chatLobbyBloc.getPrivateRoomIdWithUser(userUid);
+    };
+
     Widget avatar = avatarUrl != null
         ? CircleAvatar(backgroundImage:NetworkImage(avatarUrl))
         : Icon(Icons.accessibility_new);
-    return _chatCell('global', name, avatar);
+    return _chatCell(getRoomId, name, avatar);
   }
 
 }

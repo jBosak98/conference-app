@@ -95,7 +95,7 @@ class _ChatPageState extends State<ChatPage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            CircleAvatar(backgroundImage: NetworkImage(document['imageURL'])),
+            CircleAvatar(backgroundImage: NetworkImage(document['imgUrl'])),
             Padding(
                 padding: EdgeInsets.only(left: 5),
                 child: Text(

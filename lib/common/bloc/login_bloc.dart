@@ -7,7 +7,7 @@ class LoginBloc extends BaseBloc {
 
   UserDataRepository _userDataRepository;
 
-  LoginBloc(this.firebaseAuth);
+  LoginBloc(this.firebaseAuth, this._userDataRepository);
 
   void saveUserData(User user) => _userDataRepository.saveUserData(user);
 }

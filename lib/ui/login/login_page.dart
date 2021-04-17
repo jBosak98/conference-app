@@ -90,6 +90,7 @@ class _LoginPageState extends State<LoginPage> {
   Future<User> _googleSignIn() async {
     final curUser = this._user ?? widget._loginBloc.firebaseAuth.currentUser;
     if(curUser != null && !curUser.isAnonymous){
+      setState(()=> this._user = curUser);
       return curUser;
     }
 
@@ -105,7 +106,6 @@ class _LoginPageState extends State<LoginPage> {
         .firebaseAuth
         .signInWithCredential(credential);
     setState(()=> this._user = user.user);
-    setState(()=> this._busy = false);
     return user.user;
   }
 

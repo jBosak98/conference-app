@@ -17,7 +17,7 @@ class UserDataRepository {
     _firestore
         .collection("user")
         .doc(user.uid)
-        .update({
+        .set({
           'name': user.displayName,
           'pushToken': token,
           'userImg': user.photoURL

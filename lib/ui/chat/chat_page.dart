@@ -80,7 +80,7 @@ class _ChatPageState extends State<ChatPage> {
               padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
               width: 200.0,
               decoration: BoxDecoration(
-                  color: Colors.lightGreenAccent,
+                  color: Colors.lightBlueAccent,
                   borderRadius: BorderRadius.circular(8.0)
               ),
               child: _isItMe(document['userId'])
@@ -118,10 +118,13 @@ class _ChatPageState extends State<ChatPage> {
 
     Widget buildInput(roomId) =>
         Container(
+            color:Colors.blue,
             child: Row(
               children: <Widget>[
+
                 Flexible(
                   child: Container(
+
                     padding: EdgeInsets.all(13.0),
                     child: TextField(
                       controller: textEditingController,
@@ -133,7 +136,8 @@ class _ChatPageState extends State<ChatPage> {
                 ),
                 Material(
                   child: new Container(
-                    margin: new EdgeInsets.symmetric(horizontal: 8.0),
+                    color: Colors.blue,
+                    padding: new EdgeInsets.symmetric(horizontal: 8.0),
                     child: new IconButton(
                       icon: new Icon(Icons.send),
                       onPressed: () => onSendMessage(textEditingController.text, roomId),

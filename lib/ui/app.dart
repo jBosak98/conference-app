@@ -21,7 +21,7 @@ class App extends StatelessWidget {
       title: 'Flutter samples',
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        accentColor: Colors.amberAccent,
+        accentColor: Colors.blueAccent,
       ),
       home: RoomPage( title: 'My room'),
       routes: <String, WidgetBuilder> {

@@ -1,6 +1,6 @@
 # session
 
-linux_session_app
+conference_app
 
 ## Getting Started
 

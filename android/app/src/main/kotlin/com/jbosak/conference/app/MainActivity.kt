@@ -1,4 +1,4 @@
-package com.jbosak.linux.session
+package com.jbosak.conference.app
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -28,6 +28,7 @@ class _ChatPageState extends State<ChatPage> {
 
     return Scaffold(
       appBar: AppBar(
+          backgroundColor: Color(0xff053F5E),
         title: Text(widget.title),
       ),
       body: WillPopScope(

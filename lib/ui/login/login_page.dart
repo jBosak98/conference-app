@@ -76,6 +76,7 @@ class _LoginPageState extends State<LoginPage> {
     ];
     return Scaffold(
       appBar: AppBar(
+          backgroundColor: Color(0xff053F5E),
         title: Text(widget.title),
       ),
       body: Center(

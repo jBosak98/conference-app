@@ -52,6 +52,10 @@ flutter:
   uses-material-design: true
   assets:
     - images/me.jpg
+    - images/ja.jpg
+    - images/ja2.jpg
+    - images/ja3.jpg
+    - images/ja4.jpg
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

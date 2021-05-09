@@ -1,89 +1,48 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:device_calendar/device_calendar.dart';
+import 'package:session/common/bloc/calendar_bloc.dart';
 
-class RoomPage extends StatefulWidget {
+class CalendarPage extends StatefulWidget {
   final String title;
   final String args;
+  final CalendarBloc calendarBloc;
 
-  RoomPage({Key key, this.title, this.args}) : super(key: key);
+  CalendarPage(this.calendarBloc, {Key key, this.title, this.args})
+      :super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _RoomPageState();
+  State<StatefulWidget> createState() => _CalendarPageState();
 }
 
-class Event {
+class ConferenceEvent {
   final String id;
   final String img;
   final String title;
   final String author;
   final String dateString;
 
-  Event(this.id, this.img, this.title, this.author, this.dateString);
+  ConferenceEvent(this.id, this.img, this.title, this.author, this.dateString);
 }
 
-class _RoomPageState extends State<RoomPage> {
+extension CalendarEvent on ConferenceEvent{
+  Event toCalendarEvent(String calendarId){
+    return Event(
+        calendarId,
+        title: this.title,
+        start: DateTime.now(),
+        end:DateTime.now().add(Duration(days: 3))
+    );
+  }
+}
+
+class _CalendarPageState extends State<CalendarPage> {
   List<String> _checkedEvents = [];
 
   @override
   Widget build(BuildContext context) {
-    List<Event> events = [
-      Event(
-        "1",
-        "images/me.jpg",
-        "How to write Flutter app",
-        "Jakub Bosak",
-        "May 27, 6:00PM",
-      ),
-      Event(
-        "2",
-        "images/ja.jpg",
-        "Docker security",
-        "Jakub Bosak",
-        "May 27, 6:00PM",
-      ),
-      Event(
-        "3",
-        "images/ja2.jpg",
-        "Clojure - language of the future",
-        "Jakub Bosak",
-        "May 27, 6:00PM",
-      ),
-      Event(
-        "4",
-        "images/ja3.jpg",
-        "Test Driven Development",
-        "Jakub Bosak",
-        "May 27, 6:00PM",
-      ),
-      Event(
-        "5",
-        "images/ja4.jpg",
-        "Typescript - hot or not?",
-        "Jakub Bosak",
-        "May 27, 6:00PM",
-      ),
-      Event(
-        "6",
-        "images/ja4.jpg",
-        "GraphQL - a query language for your API",
-        "Jakub Bosak",
-        "May 27, 6:00PM",
-      ),
-      Event(
-        "7",
-        "images/me.jpg",
-        "Microservices architecture - introduction",
-        "Jakub Bosak",
-        "May 27, 6:00PM",
-      ),
-      Event(
-        "8",
-        "images/me.jpg",
-        "How to write Flutter app",
-        "Jakub Bosak",
-        "May 27, 6:00PM",
-      ),
-    ];
+    final events = widget.calendarBloc.getEvents();
+
 
     return Scaffold(
         appBar: AppBar(
@@ -92,7 +51,10 @@ class _RoomPageState extends State<RoomPage> {
           actions: <Widget>[
             _checkedEvents.isNotEmpty ? IconButton(
               icon: Icon(Icons.event),
-              onPressed: () {}
+              onPressed:  ()async{
+                await widget.calendarBloc.exportEvents(_checkedEvents);
+                //TODO: toast
+              }
             ) : Container() ,
             IconButton(
                 icon: Icon(Icons.message),
@@ -142,6 +104,7 @@ class _RoomPageState extends State<RoomPage> {
   Widget eventComponentRightSite(
       String name, String author, String dateString, bool isChecked) {
     final size = MediaQuery.of(context).size;
+    final secondaryTextColor = isChecked ? Color(0xff363636) : Color(0xffababab);
     return Flexible(
         child: Container(
             margin: EdgeInsets.only(left: 20, top: 10, bottom: 20),
@@ -162,7 +125,7 @@ class _RoomPageState extends State<RoomPage> {
                     child: Row(children: [
                       Text(author,
                           style: TextStyle(
-                            color: Color(0xffababab),
+                            color: secondaryTextColor,
                             fontWeight: FontWeight.w300,
                           )),
                       Container(
@@ -172,7 +135,7 @@ class _RoomPageState extends State<RoomPage> {
                             Container(
                                 child: Text(dateString,
                                     style: TextStyle(
-                                        color: Color(0xffababab),
+                                        color: secondaryTextColor,
                                         fontSize: 12,
                                         fontFamily: 'Roboto')))
                           ]))
@@ -193,7 +156,7 @@ class _RoomPageState extends State<RoomPage> {
           child: Container(
               margin: EdgeInsets.only(top: 10),
               decoration: BoxDecoration(
-                color: isChecked? Colors.indigoAccent : Colors.white,
+                color: isChecked? Colors.indigoAccent.withOpacity(0.2) : Colors.white,
                 borderRadius: BorderRadius.circular(5),
               ),
               child: Row(

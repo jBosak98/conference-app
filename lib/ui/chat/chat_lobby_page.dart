@@ -24,7 +24,7 @@ class _ChatLobbyState extends State<ChatLobbyPage> {
   );
   @override
   Widget build(BuildContext context) {
-    final globalChat = _chatCell(()async=>'global', 'Global chat', Icon(Icons.group));
+    final globalChat = _chatCell(() async=>'global', 'Global chat', Icon(Icons.group));
 
     return Scaffold(
         appBar: AppBar(

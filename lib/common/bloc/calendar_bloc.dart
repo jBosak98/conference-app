@@ -4,7 +4,7 @@ import 'package:session/ui/room/calendar_page.dart';
 
 class CalendarBloc extends BaseBloc {
 
-  Future<List<dynamic>> exportEvents(List<String> eventsIds) async {
+  Future<List<Result<String>>> exportEvents(List<String> eventsIds) async {
     final DeviceCalendarPlugin deviceCalendar = DeviceCalendarPlugin();
     final Result<List<Calendar>> calendars =
     await deviceCalendar.retrieveCalendars();

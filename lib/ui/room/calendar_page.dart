@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:device_calendar/device_calendar.dart';
 import 'package:session/common/bloc/calendar_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class CalendarPage extends StatefulWidget {
   final String title;
@@ -53,7 +54,18 @@ class _CalendarPageState extends State<CalendarPage> {
               icon: Icon(Icons.event),
               onPressed:  ()async{
                 await widget.calendarBloc.exportEvents(_checkedEvents);
-                //TODO: toast
+                Fluttertoast.showToast(
+                    msg: "Events added to the calendar",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Colors.indigo,
+                    textColor: Colors.white,
+                    fontSize: 16.0
+                );
+                setState((){
+                  _checkedEvents = [];
+                });
               }
             ) : Container() ,
             IconButton(

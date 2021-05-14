@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:device_calendar/device_calendar.dart';
 import 'package:session/common/bloc/calendar_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 
 class CalendarPage extends StatefulWidget {
   final String title;
@@ -16,26 +16,7 @@ class CalendarPage extends StatefulWidget {
   State<StatefulWidget> createState() => _CalendarPageState();
 }
 
-class ConferenceEvent {
-  final String id;
-  final String img;
-  final String title;
-  final String author;
-  final String dateString;
 
-  ConferenceEvent(this.id, this.img, this.title, this.author, this.dateString);
-}
-
-extension CalendarEvent on ConferenceEvent{
-  Event toCalendarEvent(String calendarId){
-    return Event(
-        calendarId,
-        title: this.title,
-        start: DateTime.now(),
-        end:DateTime.now().add(Duration(days: 3))
-    );
-  }
-}
 
 class _CalendarPageState extends State<CalendarPage> {
   List<String> _checkedEvents = [];
@@ -52,7 +33,7 @@ class _CalendarPageState extends State<CalendarPage> {
           actions: <Widget>[
             _checkedEvents.isNotEmpty ? IconButton(
               icon: Icon(Icons.event),
-              onPressed:  ()async{
+              onPressed:  () async{
                 await widget.calendarBloc.exportEvents(_checkedEvents);
                 Fluttertoast.showToast(
                     msg: "Events added to the calendar",
@@ -103,7 +84,7 @@ class _CalendarPageState extends State<CalendarPage> {
                                       event.img,
                                       event.title,
                                       event.author,
-                                      event.dateString,
+                                      event.startDate,
                                       _checkedEvents.contains(event.id)
                                   )
                           ))
@@ -114,7 +95,7 @@ class _CalendarPageState extends State<CalendarPage> {
   }
 
   Widget eventComponentRightSite(
-      String name, String author, String dateString, bool isChecked) {
+      String name, String author, String date, bool isChecked) {
     final size = MediaQuery.of(context).size;
     final secondaryTextColor = isChecked ? Color(0xff363636) : Color(0xffababab);
     return Flexible(
@@ -142,10 +123,10 @@ class _CalendarPageState extends State<CalendarPage> {
                           )),
                       Container(
                           margin:
-                              EdgeInsets.only(top: 3, left: size.width * 0.15),
+                              EdgeInsets.only(top: 3, left: size.width * 0.10),
                           child: Row(children: [
                             Container(
-                                child: Text(dateString,
+                                child: Text(date,
                                     style: TextStyle(
                                         color: secondaryTextColor,
                                         fontSize: 12,
@@ -160,9 +141,11 @@ class _CalendarPageState extends State<CalendarPage> {
       String img,
       String name,
       String author,
-      String dateString,
+      DateTime startDate,
       bool isChecked
       ) {
+    final DateFormat formatter = DateFormat('EEE, MMM d, h:mm a' );
+    final displayDate = formatter.format(startDate);
     return Row(children: [
       Flexible(
           child: Container(
@@ -180,7 +163,7 @@ class _CalendarPageState extends State<CalendarPage> {
                       height: 90,
                       width: 50,
                       child: Image.asset(img)),
-                  eventComponentRightSite(name, author, dateString, isChecked)
+                  eventComponentRightSite(name, author, displayDate, isChecked)
                 ],
               )))
     ]);

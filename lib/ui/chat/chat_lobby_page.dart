@@ -17,8 +17,8 @@ class ChatLobbyPage extends StatefulWidget {
 
 class _ChatLobbyState extends State<ChatLobbyPage> {
 
-  Widget _divider({double height=1.0}) =>Divider(
-    color: Colors.white30,
+  Widget _divider({double height=1.0,Color color=Colors.white30}) =>Divider(
+    color: color,
     height: height,
     thickness: 1.0,
   );
@@ -28,7 +28,7 @@ class _ChatLobbyState extends State<ChatLobbyPage> {
 
     return Scaffold(
         appBar: AppBar(
-            backgroundColor: Color(0xff053F5E),
+            backgroundColor: Colors.indigo,
           title: Text(widget.title),
         ),
         body: Column(
@@ -58,11 +58,11 @@ class _ChatLobbyState extends State<ChatLobbyPage> {
               child: Row(
                   children: <Widget>[
                     Padding(
-                      padding: EdgeInsets.only(right: 8.0),
+                      padding: EdgeInsets.only(right: 15.0),
                       child: Container(width:40, child:icon),
                     ),
                     Text(text,
-                      style: TextStyle(fontSize: 18.0),
+                      style: TextStyle(fontSize: 18.0, color: Color(0xff363636)),
                     ),
                   ]
               )
@@ -99,7 +99,8 @@ class _ChatLobbyState extends State<ChatLobbyPage> {
       child: ListView.separated(
           itemBuilder: (BuildContext context, int index) =>
               _userChatCell(response.docs[index]),
-          separatorBuilder: (BuildContext context, int index) => _divider(),
+          separatorBuilder: (BuildContext context, int index) =>
+              _divider(height:5),
           itemCount: response.docs.length,
       )
     );

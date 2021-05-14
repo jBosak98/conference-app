@@ -9,5 +9,11 @@ class LoginBloc extends BaseBloc {
 
   LoginBloc(this.firebaseAuth, this._userDataRepository);
 
+  Stream<User> get onAuthStateChanged => firebaseAuth.authStateChanges();
+
+  Future<String> getCurrentUID() async {
+    return firebaseAuth.currentUser?.uid;
+  }
+
   void saveUserData(User user) => _userDataRepository.saveUserData(user);
 }

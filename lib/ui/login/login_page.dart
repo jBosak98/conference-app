@@ -44,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
         setState(() => this._busy = true);
         await this._googleSignIn();
         widget._loginBloc.saveUserData(_user);
-        Navigator.pop(context);
+        Navigator.popAndPushNamed(context, '/home');
         setState(()=> this._busy = false);
       },
     );
@@ -76,7 +76,15 @@ class _LoginPageState extends State<LoginPage> {
     ];
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Color(0xff053F5E),
+        automaticallyImplyLeading: _user == null,
+        leading: new IconButton(
+          icon: new Icon(Icons.arrow_back),
+          onPressed: () => {
+            if(_user != null)
+              Navigator.popAndPushNamed(context, '/home')
+          },
+        ),
+        backgroundColor: Colors.indigo,
         title: Text(widget.title),
       ),
       body: Center(

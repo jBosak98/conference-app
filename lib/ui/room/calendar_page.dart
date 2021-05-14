@@ -21,10 +21,12 @@ class CalendarPage extends StatefulWidget {
 class _CalendarPageState extends State<CalendarPage> {
   List<String> _checkedEvents = [];
 
+
+
+
   @override
   Widget build(BuildContext context) {
     final events = widget.calendarBloc.getEvents();
-
 
     return Scaffold(
         appBar: AppBar(
@@ -50,11 +52,8 @@ class _CalendarPageState extends State<CalendarPage> {
               }
             ) : Container() ,
             IconButton(
-                icon: Icon(Icons.message),
-                onPressed: () => Navigator.pushNamed(context, '/chatLobby')),
-            IconButton(
                 icon: Icon(Icons.account_circle),
-                onPressed: () => Navigator.pushNamed(context, '/login')),
+                onPressed: () => Navigator.popAndPushNamed(context, '/login')),
           ],
         ),
         body: Container(

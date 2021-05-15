@@ -35,31 +35,36 @@ class _ChatLobbyState extends State<ChatLobbyPage> {
           backgroundColor: Colors.indigo,
           title: Text(widget.title),
         ),
-        body: Column(
+        body: Container(
+          decoration:BoxDecoration(
+              color: Colors.grey[100],
+          ),
+            child: Column(
           children: <Widget>[globalChat, _divider(height: 10.0), _usersList()],
-        ));
+        )));
   }
 
   Widget _chatCell(Function getRoomId, String text, icon) {
     final children = [
       Padding(
-        padding: EdgeInsets.only(right: 15.0, top:6),
+        padding: EdgeInsets.only(right: 15.0, top: 6),
         child: Container(width: 40, child: icon),
       ),
-      Container(padding:EdgeInsets.only(top: 15.0,bottom:15),
-          child:Align(
-          alignment: Alignment.center,
-          child:Text(
-        text,
+      Container(
+          padding: EdgeInsets.only(top: 15.0, bottom: 15),
+          child: Align(
+              alignment: Alignment.center,
+              child: Text(
+                text,
 //        textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 18.0, color: Color(0xff363636)),
-      ))),
+                style: TextStyle(fontSize: 18.0, color: Color(0xff363636)),
+              ))),
     ];
 
     return SimpleContainer(
       false,
       children: children,
-      margin: EdgeInsets.only(top:10),
+      margin: EdgeInsets.only(top: 10),
       onPressed: () async {
         final roomId = await getRoomId();
         Navigator.pushNamed(context, '/chat', arguments: ChatArguments(roomId));

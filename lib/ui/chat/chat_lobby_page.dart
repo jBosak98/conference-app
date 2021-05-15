@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:session/common/bloc/chat_lobby_bloc.dart';
 import 'package:session/ui/chat/chat_page.dart';
 
+import '../simple_container.dart';
+import '../simple_list_view.dart';
+
 class ChatLobbyPage extends StatefulWidget {
   ChatLobbyPage(this.chatLobbyBloc, {Key key, this.title}) : super(key: key);
 
@@ -12,112 +15,99 @@ class ChatLobbyPage extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() => _ChatLobbyState();
-
 }
 
 class _ChatLobbyState extends State<ChatLobbyPage> {
+  Widget _divider({double height = 1.0, Color color = Colors.white30}) =>
+      Divider(
+        color: color,
+        height: height,
+        thickness: 1.0,
+      );
 
-  Widget _divider({double height=1.0,Color color=Colors.white30}) =>Divider(
-    color: color,
-    height: height,
-    thickness: 1.0,
-  );
   @override
   Widget build(BuildContext context) {
-    final globalChat = _chatCell(() async=>'global', 'Global chat', Icon(Icons.group));
+    final globalChat =
+        _chatCell(() async => 'global', 'Global chat', Icon(Icons.group));
 
     return Scaffold(
         appBar: AppBar(
-            backgroundColor: Colors.indigo,
+          backgroundColor: Colors.indigo,
           title: Text(widget.title),
         ),
         body: Column(
-          children: <Widget>[
-            globalChat,
-            _divider(height:10.0),
-            _usersList()
-          ],
-        )
-    );
+          children: <Widget>[globalChat, _divider(height: 10.0), _usersList()],
+        ));
   }
 
-  Widget _chatCell(Function getRoomId, String text, icon){
-    return Container(
-      color: Colors.white,
-      child: TextButton(
-          onPressed: () async {
-            final roomId = await getRoomId();
-            Navigator.pushNamed(
-                context,
-                '/chat',
-                arguments: ChatArguments(roomId)
-            );
-            },
-          child: Padding(
-              padding: EdgeInsets.all(20),
-              child: Row(
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(right: 15.0),
-                      child: Container(width:40, child:icon),
-                    ),
-                    Text(text,
-                      style: TextStyle(fontSize: 18.0, color: Color(0xff363636)),
-                    ),
-                  ]
-              )
-          )),
-    );
-  }
+  Widget _chatCell(Function getRoomId, String text, icon) {
+    final children = [
+      Padding(
+        padding: EdgeInsets.only(right: 15.0, top:6),
+        child: Container(width: 40, child: icon),
+      ),
+      Container(padding:EdgeInsets.only(top: 15.0,bottom:15),
+          child:Align(
+          alignment: Alignment.center,
+          child:Text(
+        text,
+//        textAlign: TextAlign.center,
+        style: TextStyle(fontSize: 18.0, color: Color(0xff363636)),
+      ))),
+    ];
 
-  Widget _usersList(){
-    return StreamBuilder(
-      stream: widget.chatLobbyBloc.usersStream(),
-      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot){
-        if(snapshot.hasData) {
-          return _listViewBuilder(snapshot.data);
-        } else if(snapshot.hasError){
-          return Center(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Text("Error has occured"),
-            )
-          );
-        }
-        return Center(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Text("No chats"),
-          )
-        );
+    return SimpleContainer(
+      false,
+      children: children,
+      margin: EdgeInsets.only(top:10),
+      onPressed: () async {
+        final roomId = await getRoomId();
+        Navigator.pushNamed(context, '/chat', arguments: ChatArguments(roomId));
       },
     );
   }
 
-  Widget _listViewBuilder(QuerySnapshot response){
-    return Expanded(
-      child: ListView.separated(
-          itemBuilder: (BuildContext context, int index) =>
-              _userChatCell(response.docs[index]),
-          separatorBuilder: (BuildContext context, int index) =>
-              _divider(height:5),
-          itemCount: response.docs.length,
-      )
+  Widget _usersList() {
+    return StreamBuilder(
+      stream: widget.chatLobbyBloc.usersStream(),
+      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasData) {
+          return _listViewBuilder(snapshot.data);
+        } else if (snapshot.hasError) {
+          return Center(
+              child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Text("Error has occured"),
+          ));
+        }
+        return Center(
+            child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Text("No chats"),
+        ));
+      },
     );
   }
-  Widget _userChatCell(QueryDocumentSnapshot user){
+
+  Widget _listViewBuilder(QuerySnapshot response) {
+    return Expanded(
+        child: SimpleListView(
+            children: [...response.docs.map((doc) => _userChatCell(doc))]));
+    //_userChatCell(doc)
+  }
+
+  Widget _userChatCell(QueryDocumentSnapshot user) {
     String name = user.data()['name'];
     String avatarUrl = user.data()['userImg'];
 
     String userUid = user.data()['uid'];
-    final getRoomId = ()async {
+    final getRoomId = () async {
       return widget.chatLobbyBloc.getPrivateRoomIdWithUser(userUid);
     };
 
     Widget avatar = avatarUrl != null
-        ? CircleAvatar(backgroundImage:NetworkImage(avatarUrl))
+        ? CircleAvatar(backgroundImage: NetworkImage(avatarUrl))
         : Icon(Icons.accessibility_new);
     return _chatCell(getRoomId, name, avatar);
   }
-
 }

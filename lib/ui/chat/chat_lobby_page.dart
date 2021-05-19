@@ -94,6 +94,8 @@ class _ChatLobbyState extends State<ChatLobbyPage> {
     );
   }
 
+
+
   Widget _listViewBuilder(QuerySnapshot response) {
     return Expanded(
         child: SimpleListView(

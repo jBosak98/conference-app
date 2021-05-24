@@ -6,9 +6,11 @@ class SimpleContainer extends StatelessWidget {
   final List<Widget> children;
   final VoidCallback onPressed;
   final EdgeInsetsGeometry margin;
+  final EdgeInsetsGeometry padding;
 
   SimpleContainer(this._isChecked,
-      {this.children = const <Widget>[], this.onPressed, this.margin});
+      {this.children = const <Widget>[], this.onPressed, this.margin,
+      this.padding});
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +18,7 @@ class SimpleContainer extends StatelessWidget {
       Flexible(
           child: Container(
               margin: margin == null ? EdgeInsets.only(top: 10) : margin,
+              padding: padding,
               decoration: BoxDecoration(
                 color: _isChecked
                     ? Colors.indigoAccent.withOpacity(0.2)

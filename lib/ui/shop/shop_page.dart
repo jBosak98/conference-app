@@ -15,6 +15,20 @@ class _ShopPageState extends State<ShopPage> {
 
   @override
   Widget build(BuildContext context) {
+    final imageUrl = 'images/t-shirt2.jpg';
+    const items = [
+      {
+        "imgPath": 'images/t-shirt2.jpg',
+        "name":"Yellow T-shirt",
+      },
+      {
+        "imgPath": 'images/t-shirt.jpg',
+        "name":"Black T-shirt",
+      },
+      {
+        "name":"Ticket",
+      }
+    ];
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.indigo,
@@ -24,11 +38,19 @@ class _ShopPageState extends State<ShopPage> {
           scaffoldContext = context;
           return SimpleListView(
             children: [
-              ...["T-shirt", "Ticket"]
+              ...items
                   .map<Widget>(
-                      (item) => SimpleContainer(false, onPressed: () async {
+                      (item) => SimpleContainer(false,
+                          padding: EdgeInsets.only(top:20, bottom:20),
+                          onPressed: () async {
                             await _makePayment(context);
-                          }, children: [Text(item)]))
+                          },
+                          children: [Text(item["name"] != null ? item["name"] : ''),
+                            item["imgPath"] != null ? Container(
+                              margin: EdgeInsets.only(left: 20),
+                              height: 90,
+                              width: 50,
+                              child:Image.asset(item["imgPath"]) ) : Container()]))
                   .toList()
             ],
           );
@@ -70,5 +92,4 @@ class _ShopPageState extends State<ShopPage> {
       });
     }
   }
-
 }
